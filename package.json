@@ -1,0 +1,65 @@
+{
+  "name": "natours",
+  "version": "1.0.0",
+  "description": "Learning node, express, and mongoDB",
+  "default": "app.js",
+  "targets": {
+    "main": false
+  },
+  "browserslist": "> 0.25%, not dead",
+  "scripts": {
+    "start": "nodemon server.js",
+    "prod": "SET NODE_ENV=production&&nodemon server.js",
+    "debug": "node --inspect server.js",
+    "debug:prod": "SET NODE_ENV=production&&node --inspect server.js",
+    "watch:js": "parcel watch ./public/js/index.mjs --dist-dir ./public/dist",
+    "build:js": "parcel build ./public/js/index.mjs --dist-dir ./public/dist"
+  },
+  "author": "Emre Küpçüoğlu",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.2.2",
+    "bcrypt": "^5.1.0",
+    "compression": "^1.7.4",
+    "cookie-parser": "^1.4.6",
+    "core-js": "^3.27.1",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.1",
+    "express-mongo-sanitize": "^2.2.0",
+    "express-rate-limit": "^6.7.0",
+    "helmet": "^6.0.1",
+    "hpp": "^0.2.3",
+    "html-to-text": "^9.0.3",
+    "jsonwebtoken": "^9.0.0",
+    "mongoose": "^6.6.5",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.1",
+    "nodemailer": "^6.8.0",
+    "pug": "^3.0.2",
+    "regenerator-runtime": "^0.13.11",
+    "sharp": "^0.31.3",
+    "slugify": "^1.6.5",
+    "validator": "^13.7.0",
+    "xss-clean": "^0.1.1"
+  },
+  "devDependencies": {
+    "@prettier/plugin-pug": "^2.3.0",
+    "@types/core-js": "^2.5.5",
+    "@types/regenerator-runtime": "^0.13.1",
+    "eslint": "^8.25.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jsx-a11y": "^6.6.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react": "^7.31.10",
+    "nodemon": "^2.0.20",
+    "parcel": "^2.8.2",
+    "prettier": "^2.8.1",
+    "process": "^0.11.10"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}
