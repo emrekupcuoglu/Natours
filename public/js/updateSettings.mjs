@@ -75,6 +75,7 @@ export const updateSettings = async (data, type = "data") => {
   const url = "/api/v1/users/updateMe";
   if (type === "photo") {
     const res = await update(data, url, "photo");
+    console.log(res);
     return res.data.data.user.photo;
   }
   await update(data, url, type);

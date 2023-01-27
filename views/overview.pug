@@ -26,10 +26,20 @@ block content
           .card__header
             .card__picture
               .card__picture-overlay &nbsp;
-              img.card__picture-img(
-                src=`img/tours/${tour.imageCover}`,
-                alt=`${tour.name}`
-              )
+              picture
+                source(
+                  srcset=`img/tours/${tour.imageCover}-small.webp`,
+                  type=(type = "image/webp")
+                )
+                source(
+                  srcset=`img/tours/${tour.imageCover}-small.jpg`,
+                  type=(type = "image/jpg")
+                )
+                img.card__picture-img(
+                  src=`img/tours/${tour.imageCover}-small.jpg`,
+                  alt=`${tour.name}`
+                )
+
             h3.heading-tertiary
               span= tour.name
           .card__details

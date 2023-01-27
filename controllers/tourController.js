@@ -53,7 +53,7 @@ exports.resizeTourImages = catchAsync(async (req, res, next) => {
   // To update the tours we are using the updateOne factory function to create a updateTour handler
   // And that handler updates the tour using the data inside the req.body.
   // So we need to put the imageCoverFileName into the body
-  req.body.imageCover = `tour-${req.params.id}-${Date.now()}-cover.jpg`;
+  req.body.imageCover = `tour-${req.params.id}-${Date.now()}-cover`;
   await sharp(imageCover.buffer)
     .resize(2000, 1333)
     .toFormat("jpg")
