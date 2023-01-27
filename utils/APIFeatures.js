@@ -53,7 +53,7 @@ class APIFeatures {
       /\bgte\b|\bgt\b|\blte\b|\blt\b/g,
       (match) => `$${match}`
     );
-    console.log(queryStr);
+    // console.log(queryStr);
 
     this.query = this.query.find(JSON.parse(queryStr));
     return this;
