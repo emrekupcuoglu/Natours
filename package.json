@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "description": "Learning node, express, and mongoDB",
   "default": "app.js",
-  "targets": {
-    "main": false
-  },
   "browserslist": "> 0.25%, not dead",
   "scripts": {
     "start": "node server.js",
@@ -13,8 +10,8 @@
     "prod": "SET NODE_ENV=production&&nodemon server.js",
     "debug": "node --inspect server.js",
     "debug:prod": "SET NODE_ENV=production&&node --inspect server.js",
-    "watch:js": "parcel watch ./public/js/index.mjs --dist-dir ./public/js/bundle.js",
-    "build": "parcel build ./public/js/index.mjs --dist-dir ./public/js/bundle.js"
+    "watch:js": "parcel watch ./public/js/index.mjs --dist-dir ./public/js/",
+    "build": "parcel build ./public/js/index.mjs --dist-dir ./public/js/"
   },
   "author": "Emre Küpçüoğlu",
   "license": "ISC",
