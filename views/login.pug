@@ -10,7 +10,8 @@ block content
           input#email.form__input(
             type="email",
             placeholder="you@example.com",
-            required
+            required,
+            name="email"
           )
         .form__group.ma-bt-md
           label.form__label(for="password") Password
@@ -18,7 +19,8 @@ block content
             type="password",
             placeholder="••••••••",
             required,
-            minlength="8"
+            minlength="8",
+            name="password"
           )
         .form__group
           button.btn.btn--green Login

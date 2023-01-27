@@ -5,7 +5,7 @@
 import "core-js/stable";
 import "regenerator-runtime/runtime";
 
-import { login, logout, sendForgotPasswordEmail } from "./login.mjs";
+import { signUp, login, logout, sendForgotPasswordEmail } from "./login.mjs";
 import {
   updateSettings,
   updatePassword,
@@ -20,6 +20,7 @@ import { displayMap } from "./mapBox.mjs";
 // const locations = JSON.parse(document.getElementById("map").dataset.locations);
 // To fix this we first get the DOM element and then only parse the data if it exist.
 const mapBox = document.querySelector("#map");
+const signUpForm = document.querySelector(".form--signup");
 const loginForm = document.querySelector(".form--login");
 const logoutBtn = document.querySelector(".nav__el--logout");
 const userDataForm = document.querySelector(".form-user-data");
@@ -27,6 +28,22 @@ const userPasswordForm = document.querySelector(".form-user-password");
 
 const forgotPasswordForm = document.querySelector(".form-forgot-password");
 const resetPasswordForm = document.querySelector(".form-reset-password");
+
+if (signUpForm) {
+  signUpForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const name = document.querySelector("#name").value;
+    const email = document.querySelector("#email").value;
+    const password = document.querySelector("#password").value;
+    const passwordConfirm = document.querySelector("#password-confirm").value;
+    signUp({
+      name,
+      email,
+      password,
+      passwordConfirm,
+    });
+  });
+}
 
 if (loginForm) {
   loginForm.addEventListener("submit", (e) => {

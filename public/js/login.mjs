@@ -28,6 +28,17 @@ const loginFetch = async (email, password) => {
   }
 };
 
+export const signUp = async (data) => {
+  const res = await axios.post("/api/v1/users/signup", {
+    name: data.name,
+    email: data.email,
+    password: data.password,
+    passwordConfirm: data.passwordConfirm,
+  });
+
+  console.log(res);
+};
+
 export const login = async (email, password) => {
   try {
     const res = await axios({
