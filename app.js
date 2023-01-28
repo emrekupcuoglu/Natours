@@ -111,7 +111,7 @@ app.use(
 // whenever we send a text response to the client
 // response will get dramatically compressed them no matter if it is JSON or HTML code
 // This process doesn't affect images or other files.
-app.use(compression());
+app.use(compression({ brotli: { enabled: true, zlib: {} } }));
 
 // *3rd party middleware
 // We are using the environment variable to only use this logging middleware
