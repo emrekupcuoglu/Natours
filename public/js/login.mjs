@@ -29,12 +29,14 @@ const loginFetch = async (email, password) => {
 };
 
 export const signUp = async (data) => {
+  console.log("data", data);
   const res = await axios.post("/api/v1/users/signup", {
     name: data.name,
     email: data.email,
     password: data.password,
     passwordConfirm: data.passwordConfirm,
   });
+  console.log("res", res);
 
   if (res.data.status === "success") {
     showAlert("success", "Sign up successful");

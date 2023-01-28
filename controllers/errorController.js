@@ -34,6 +34,12 @@ const handleJWTExpiredError = () => {
   return new AppError(message, 401);
 };
 
+const handleEmailError = () => {
+  const message =
+    "Email failed to send (This website is a demo, your account is created)";
+  return new AppError(message, 500);
+};
+
 const sendErrorDev = (err, req, res) => {
   // * A) API
   // originalUrl is basically the entire URL but without the host
@@ -155,6 +161,10 @@ module.exports = (err, req, res, next) => {
 
     if (err.name === "TokenExpiredError") {
       error = handleJWTExpiredError();
+    }
+
+    if (err.code === "EAUTH") {
+      error = handleEmailError();
     }
 
     sendErrorProd(error, req, res);

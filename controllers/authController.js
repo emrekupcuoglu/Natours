@@ -72,8 +72,8 @@ exports.signup = catchAsync(async (req, res, next) => {
     email: req.body.email,
     password: req.body.password,
     passwordConfirm: req.body.passwordConfirm,
-    passwordChangedAt: req.body.passwordChangedAt,
   });
+  console.log("req.body", req.body);
   // !!!!!!!!!!!!IMPORTANT!!!!!!!!!!!!
   // We didn't just create the user and send it because if we do it like that we can not hide the password.
   // Even though the password is hashed it is still a bad practice to leak it.
@@ -93,9 +93,12 @@ exports.signup = catchAsync(async (req, res, next) => {
   // We have specified the expiration time. We can use a special string like 90d and the
   // signing algorithm will automatically understand that as 90 days.
 
+  // ! NOT SENDING THE EMAIL IN PRODUCTION BECAUSE I DON'T HAVE A PAID DOMAIN
   // Sending email to the user
-  const url = `${req.protocol}://${req.get("host")}/me`;
-  await new Email(newUser, url).sendWelcome();
+  if (process.env.NODE_ENV === "development") {
+    const url = `${req.protocol}://${req.get("host")}/me`;
+    await new Email(newUser, url).sendWelcome();
+  }
 
   createSendToken(newUser, 201, res);
 });
