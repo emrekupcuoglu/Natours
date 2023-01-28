@@ -10,8 +10,8 @@
     "prod": "SET NODE_ENV=production&&nodemon server.js",
     "debug": "node --inspect server.js",
     "debug:prod": "SET NODE_ENV=production&&node --inspect server.js",
-    "watch:js": "parcel watch ./public/js/index.mjs --dist-dir ./public/js/",
-    "build:js": "parcel build ./public/js/index.mjs --dist-dir ./public/js/"
+    "watch:js": "parcel watch ./frontEndJs/index.mjs --dist-dir ./public/js/",
+    "build:js": "parcel build ./frontEndJs/index.mjs --dist-dir ./public/js/"
   },
   "author": "Emre Küpçüoğlu",
   "license": "ISC",
