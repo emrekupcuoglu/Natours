@@ -20,6 +20,9 @@ const viewRouter = require("./routes/viewRoutes");
 // and save its results to a variable called app
 const app = express();
 
+// ? Trusting proxies so that heroku/railway can enforce https
+app.enable("trust proxy");
+
 // We have installed the pug module but we don't have to require pug because express handles that behind the scenes
 app.set("view engine", "pug");
 // We need to define where these views are located in our filesystem
