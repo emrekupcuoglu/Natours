@@ -30,26 +30,31 @@ const createSendToken = (user, statusCode, req, res) => {
     // httpOnly property makes it so the cookie can not be accessed or modified in any way by the browser
     // This is important to prevent XSS attacks
     httpOnly: true,
-    // In express.js we have a secure property that is on the request
-    // Only when the connection is secure then the req.secure is equals to secure
-    // ! Another problem is this doesn't work in hero (we using railway but it doesn't work there as well)
-    // Because heroku proxies which basically means redirects or modifies all incoming requests into out application
-    // before they actually reach the app.
-    // *Taken from express-sslify package npm website
-    // Heroku, nodejitsu and other hosters often use reverse proxies which offer SSL endpoints but then forward unencrypted HTTP traffic to the website. This makes it difficult to detect if the original request was indeed via HTTPS. Luckily, most reverse proxies set the x-forwarded-proto header flag with the original request scheme. express-sslify is ready for such scenarios, but you have to specifically request the evaluation of this flag:
-
-    // In order to make this also work in heroku we also need to test if the x-forward proto header is set to https.
-    // ! x-forwarded-* headers are not secure thats why heroku overwrites them automatically
-    secure: req.secure === true || req.headers["x-forwarded-proto"] === "https",
-    // ! In order for this to work we also need to trust proxies because heroku and railway like services use reverse proxies
-    // ! We do that in the app.js
   };
+  console.log(req.secure, req.header["x-forwarded-proto"]);
   // !We have set the the cookie to secure when we are in production but the problem with this
   // the fact that we are in production doesn't mean the connection is actually secure
   // Because not all deployed applications are automatically set to https
   // We need to change this if statement because of this
   // We have refactored the if statement and put it in the cookieOptions
   // if (process.env.NODE_ENV === "production") cookieOptions.secure = true;
+
+  // In express.js we have a secure property that is on the request
+  // Only when the connection is secure then the req.secure is equals to secure
+  // ! Another problem is this doesn't work in hero (we using railway but it doesn't work there as well)
+  // Because heroku proxies which basically means redirects or modifies all incoming requests into out application
+  // before they actually reach the app.
+  // *Taken from express-sslify package npm website
+  // Heroku, nodejitsu and other hosters often use reverse proxies which offer SSL endpoints but then forward unencrypted HTTP traffic to the website. This makes it difficult to detect if the original request was indeed via HTTPS. Luckily, most reverse proxies set the x-forwarded-proto header flag with the original request scheme. express-sslify is ready for such scenarios, but you have to specifically request the evaluation of this flag:
+
+  // In order to make this also work in heroku we also need to test if the x-forward proto header is set to https.
+  // ! x-forwarded-* headers are not secure thats why heroku overwrites them automatically
+  if (req.secure === true || req.headers["x-forwarded-proto"] === "https") {
+    cookieOptions.secure = true;
+  }
+  console.log(cookieOptions.secure);
+  // ! In order for this to work we also need to trust proxies because heroku and railway like services use reverse proxies
+  // ! We do that in the app.js
 
   // ? Sending a cookie
   // To send a cookie we attach it to the response object using the .cookie() method

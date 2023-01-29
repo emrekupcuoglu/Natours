@@ -23,6 +23,15 @@ const app = express();
 // ? Trusting proxies so that heroku/railway can enforce https
 app.enable("trust proxy");
 
+// ? Enforcing HTTPS across the site
+if (process.env.NODE_ENV === "production") {
+  app.use((req, res, next) => {
+    if (req.protocol !== "https")
+      res.redirect(`https://${req.header("host")}${req.url}`);
+    else next();
+  });
+}
+
 // We have installed the pug module but we don't have to require pug because express handles that behind the scenes
 app.set("view engine", "pug");
 // We need to define where these views are located in our filesystem
