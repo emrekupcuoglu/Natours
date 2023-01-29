@@ -40,7 +40,7 @@ const createSendToken = (user, statusCode, req, res) => {
   // If it uses HTTPS it continues normally if it does not then we redirect to a page that uses the HTTPS protocol. It looks like railway does this automatically but
   // we implemented this ourselves just in case. There is also a package called express-sslify that also handles deployment to azure as well as heroku, etc.
 
-  console.log(req.secure, req.header["x-forwarded-proto"]);
+  // console.log(req.secure, req.header["x-forwarded-proto"]);
   // !We have set the the cookie to secure when we are in production but the problem with this
   // the fact that we are in production doesn't mean the connection is actually secure
   // Because not all deployed applications are automatically set to https
@@ -61,7 +61,7 @@ const createSendToken = (user, statusCode, req, res) => {
   if (req.secure === true || req.headers["x-forwarded-proto"] === "https") {
     cookieOptions.secure = true;
   }
-  console.log(cookieOptions.secure);
+  // console.log(cookieOptions.secure);
   // ! In order for this to work we also need to trust proxies because heroku and railway like services use reverse proxies
   // ! We do that in the app.js
 
@@ -105,7 +105,6 @@ exports.signup = catchAsync(async (req, res, next) => {
     password: req.body.password,
     passwordConfirm: req.body.passwordConfirm,
   });
-  console.log("req.body", req.body);
   // !!!!!!!!!!!!IMPORTANT!!!!!!!!!!!!
   // We didn't just create the user and send it because if we do it like that we can not hide the password.
   // Even though the password is hashed it is still a bad practice to leak it.

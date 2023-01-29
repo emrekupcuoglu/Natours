@@ -137,3 +137,21 @@ process.on("unhandledRejection", (err) => {
 // Uncaught exception handler is above because it needs to be before any code that can cause a uncaught exception error.
 
 // console.log(x);
+
+// ? SIGTERM Signal
+// SIGTERM is an event that linux systems emit that warns the processes that is is about to be shutdown
+// When a SIGTERM is sent process has 5 seconds to close down or it will be forcefully closed using the SIGKILL signal
+// (In certain situations event the SIGKILL can't kill the process and need the process to first wake up to kill it)
+
+// Heroku or other platforms reset the server once a day to keep the app in a healthy state
+// For our app to be not abruptly closed we need to handle the SIGTERM signal and gracefully close it
+
+process.on("SIGTERM", () => {
+  console.log("🖐 SIGTERM RECEIVED SHUTTING DOWN GRACEFULLY ");
+  // server.close will close the server but before that will still handle pending requests
+  // We haven't used process.exit() in this case because the SIGKILL signal after the SIGTERM will cause the application to shutdown
+  // We just closed the server before SIGKILL closes our app so that it doesn't shut abruptly in the middle of a request.
+  server.close(() => {
+    console.log("💥 Process terminated");
+  });
+});
