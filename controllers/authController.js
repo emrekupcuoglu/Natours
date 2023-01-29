@@ -31,6 +31,15 @@ const createSendToken = (user, statusCode, req, res) => {
     // This is important to prevent XSS attacks
     httpOnly: true,
   };
+
+  // !!!!!!!IMPORTANT!!!!!!!IMPORTANT!!!!!!!IMPORTANT!!!!!!!IMPORTANT!!!!!!!IMPORTANT!!!!!!!IMPORTANT!!!!!!!IMPORTANT!!!!!!!IMPORTANT!!!!!!!IMPORTANT!!!!!!!IMPORTANT!!!!!!!!!!!!
+  // ! Code below is redundant we have implemented a better solution
+  // Jonas' implementation didn't improve security it even lowered it because we used to didn't give access to the login function if the site used HTTP
+  // But with Jonas' implementation we give free access to the login site and our use of secure cookies are disabled.
+  // We need to enforce website wide HTTPS protocol. To do that we have written a function in the app.js folder that checks if the client uses HTTPS
+  // If it uses HTTPS it continues normally if it does not then we redirect to a page that uses the HTTPS protocol. It looks like railway does this automatically but
+  // we implemented this ourselves just in case. There is also a package called express-sslify that also handles deployment to azure as well as heroku, etc.
+
   console.log(req.secure, req.header["x-forwarded-proto"]);
   // !We have set the the cookie to secure when we are in production but the problem with this
   // the fact that we are in production doesn't mean the connection is actually secure
@@ -41,7 +50,7 @@ const createSendToken = (user, statusCode, req, res) => {
 
   // In express.js we have a secure property that is on the request
   // Only when the connection is secure then the req.secure is equals to secure
-  // ! Another problem is this doesn't work in hero (we using railway but it doesn't work there as well)
+  // ! Another problem is this doesn't work in hero (we using railway it might work here but I have already created a system for redirecting)
   // Because heroku proxies which basically means redirects or modifies all incoming requests into out application
   // before they actually reach the app.
   // *Taken from express-sslify package npm website
