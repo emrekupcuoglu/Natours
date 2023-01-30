@@ -8,6 +8,7 @@ const xss = require("xss-clean");
 const hpp = require("hpp");
 const cookieParser = require("cookie-parser");
 const compression = require("express-compression");
+const cors = require("cors");
 
 const AppError = require("./utils/appError");
 const globalErrorHandler = require("./controllers/errorController");
@@ -21,6 +22,7 @@ const viewRouter = require("./routes/viewRoutes");
 const app = express();
 
 // ? Trusting proxies so that heroku/railway can enforce https
+// When we trust proxies express.js also uses the x-forwarded-proto for the value of req.protocol
 app.enable("trust proxy");
 
 // ? Enforcing HTTPS across the site
@@ -52,6 +54,59 @@ app.set("views", path.join(__dirname, "views"));
 // The step the request goes through in this example is really simple
 // The data from the body is added to the request object.
 // We need to use app.use to use middleware
+
+// ? Implement CORS
+// ! CORS only work in the browser
+// ! Other HTTP clients like POSTMAN etc. do not respect CORS
+// cors only works for simple request without some modification
+// simple request are GET, POST and HEAD requests (check mdn for more information)
+// simple request are part of the obsolete CORS spec
+// from mdn:
+// the motivation is that the <form> element from HTML 4.0 (which predates cross-site XMLHttpRequest and fetch) can submit simple requests to any origin, so anyone writing a server must already be protecting against cross-site request forgery (CSRF). Under this assumption, the server doesn't have to opt-in (by responding to a preflight request) to receive any request that looks like a form submission, since the threat of CSRF is no worse than that of form submission. However, the server still must opt-in using Access-Control-Allow-Origin to share the response with the script.
+// Apart from the headers automatically set by the user agent (for example, Connection, User-Agent, or the other headers defined in the Fetch spec as a forbidden header name), the only headers which are allowed to be manually set are those which the Fetch spec defines as a CORS-safelisted request-header, which are:
+// Accept
+// Accept-Language
+// Content-Language
+// Content-Type (please note the additional requirements below)
+// Range (only with a simple range header value; e.g., bytes=256- or bytes=127-255)
+
+// We also have non-simple requests called preflighted requests these are PUT, PATCH and DELETE (maybe a few more)
+// and also request that sends cookies or use non-standard headers.
+// These request require a so-called preflight phase.
+// So whenever there is a non-simple request the browser will then automatically issue
+// the preflight phase this is how it works:
+// Before the real request actually happens, let's say a delete requests, browse
+// first dose an options requests in order to figure out if the actual request is safe to send
+// And this means for us developers is that on our server we need to actually responds to that options request
+// Options is another HTTP request just like GET, POST or DELETE
+// When we get one of these options request on our server we the need to send back
+// the same Access-Control-Allow-Origin header. This way the browser will know that the actual request
+// and in this case the DELETE request is safe to perform, and then executes the DELETE request.
+// from mdn:
+// Unlike simple requests, for "preflighted" requests the browser first sends an HTTP request using the OPTIONS method to the resource on the other origin, in order to determine if the actual request is safe to send. Such cross-origin requests are preflighted since they may have implications for user data.
+
+// This is not for setting options. options is a HTTP request just like GET or POST
+// We need to respond to this request because the browser sends an options request when there is a preflight phase.
+// We define the route which we want to handle the options.
+// We can only allow these complex request only on specific routes if we wanted
+// app.options("/api/v1/tours/:id", cors());
+// But for this project we will do this on all routes.
+// We have a good control of allowing request combined with simple request and non-simple requests
+// We can set the both on specific routes if we want
+// handler is once again the cors middleware
+app.options("*", cors());
+
+// This setts the Access-Control-Allow-Origin to *
+// This allows everyone to consume our API
+app.use(cors());
+
+// If we don't want to share our API but we want to be able to
+// have the APIı on one domain or even  one subdomain (subdomain example:api.natours.com)
+// and then have our front end application on a different domain
+// e.g. If we have our API at api.natours.com but have our front-end app on natours.com
+// In this case all we want to do is to allow access from this origin.
+// In this case we would pass in an options object
+// app.use(cors({ origin: "https://www.natours.com" }));
 
 // ? Serving static files
 // We use this middleware for serving static files

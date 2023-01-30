@@ -132,7 +132,7 @@ const tourSchema = new mongoose.Schema(
       type: Number,
       // We use the validate property to use our validator
       // We have a callback function as the value and the
-      // !About this keyword
+      // ! About this keyword
       // callbacks function's this keyword points to the document when we are creating a new document
       // but it won't have access to the document when we are updating it
       // Because of that this function will not work on update
@@ -140,12 +140,12 @@ const tourSchema = new mongoose.Schema(
       validate: {
         validator: function (val) {
           // !!!!!!!!!!!!!IMPORTANT!!!!!!!!!!!!!!!!
-          // !There are so many caveats of using update validators so always check the docs and test them
+          // ! There are so many caveats of using update validators so always check the docs and test them
           // ! Below is just one of them:
-          // !update validators might have problems validating because at the time of validation the document might not be in memory
-          // !If that is the case then it throws an error.
+          // ! update validators might have problems validating because at the time of validation the document might not be in memory
+          // ! If that is the case then it throws an error.
 
-          // !Using the code below for update validators
+          // ! Using the code below for update validators
 
           // this keywords doesn't points to the document
           // But we can get the operation from this.op
@@ -155,7 +155,7 @@ const tourSchema = new mongoose.Schema(
           // If we use the method below it will work both for create and findOneAndUpdate
           // console.log(this.op);
           if (this.op === "find") {
-            // .getUpdate() method Returns the current update operations as a JSON object.
+            // .getUpdate() method returns the current update operations as a JSON object.
             // We have the $set operation and in there we have access to the price and the priceDiscount
             // With this method we have to send both the price and the priceDiscount
             // in the body of the request when we want to update the priceDiscount
@@ -323,6 +323,7 @@ const tourSchema = new mongoose.Schema(
 // If we query for a field combined with another one then it is more efficient to create a compound index.
 tourSchema.index({ price: 1, ratingsAverage: -1 });
 tourSchema.index({ slug: 1 });
+tourSchema.index({ name: "text" });
 
 // * Geo-Spatial Index
 // For geo-spatial data the index needs to be a 2D sphere index if the data describes real points on a sphere like earth
