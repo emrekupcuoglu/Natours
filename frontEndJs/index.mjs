@@ -87,6 +87,7 @@ if (userDataForm) {
   const photoNavEl = document.querySelector(".nav__user-img");
 
   if (photoUploadBtn) {
+    // ! Rendering the user image without reloading the page
     photoUploadBtn.addEventListener("change", async (e) => {
       e.preventDefault();
       const form = new FormData();
@@ -95,14 +96,28 @@ if (userDataForm) {
       console.log(photoId);
 
       if (photoId) {
-        photoEl.src = `/img/users/${photoId}`;
-        photoNavEl.src = `/img/users/${photoId}`;
+        // photoEl.src = `/img/users/${photoId}`;
+        // photoNavEl.src = `/img/users/${photoId}`;
       }
+      // ! FileReader API
+      // If the updateSettings function didn't return the photoID or we would need a url
+      // with different needs that we can not just append a id
+      // We would need to sue the FileRead API.
+      // FileReader API reads the file user has uploaded
+      // We can use it like this because we save it to the database with the photoID
+      // So we do not need to write the url matching strategy for the photo url again
+      // (we did this in resizeUserPhoto function in userCOntroller.js)
+      const fileReader = new FileReader();
+      fileReader.addEventListener("load", () => {
+        photoEl.src = fileReader.result;
+        photoNavEl.src = fileReader.result;
+      });
+      fileReader.readAsDataURL(document.querySelector("#photo").files[0]);
     });
   }
   userDataForm.addEventListener("submit", (e) => {
     e.preventDefault();
-    // To send files using the API we have built instead of sending using the HTML forms
+    // To send files using the API we have built instead of sending them using the HTML forms
     // we need to programmatically create multipart form-data
     // To do that we create a new FormData instance
     // and onto that form we keep appending data.
@@ -111,7 +126,7 @@ if (userDataForm) {
 
     form.append("name", document.querySelector("#name").value);
     form.append("email", document.querySelector("#email").value);
-    // To get the photo we user .files instead of .value
+    // To get the photo we use .files instead of .value
     // And these files are actually an array and since there is only one we can just select it
     // form.append("photo", document.querySelector("#photo").files[0]);
     // our AJAX call using axios will recognize this form here as an object and work

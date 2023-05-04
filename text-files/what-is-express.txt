@@ -40,7 +40,7 @@ Programming Errors
 Bugs we developers introduce into our code.
 Difficult to find and handle.
 
-SOme examples:
+Some examples:
 =>Reading properties on undefined
 =>Passing a number where an object is expected
 =>using await without sync
