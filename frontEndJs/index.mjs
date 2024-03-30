@@ -93,7 +93,6 @@ if (userDataForm) {
       const form = new FormData();
       form.append("photo", document.querySelector("#photo").files[0]);
       const photoId = await updateSettings(form, "photo");
-      console.log(photoId);
 
       if (photoId) {
         // photoEl.src = `/img/users/${photoId}`;
