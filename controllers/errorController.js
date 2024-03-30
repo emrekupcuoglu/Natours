@@ -15,9 +15,6 @@ const handleDuplicateErrorDB = (err) => {
 };
 
 const handleValidationErrorDB = (err) => {
-  // We can either do this or just use the message mongoose gives us
-  // like this return new AppError(err.message)
-  // We have used this for better customization of the error messages and learning purposes
   const keys = Object.keys(err.errors);
   const errors = keys.map((key) => err.errors[key].message);
   const message = `Invalid input data. ${errors.join(". ")}`;
@@ -76,7 +73,7 @@ const sendErrorProd = (err, req, res) => {
     // * A.2 Programming or other unknown error: do not leak error details.
     // 1. Log error for developers
     // There are real logging libraries on npm that we could use here instead of just having this simple console.error
-    // but just logging the error to hte console will make it visible onb the hosting platforms that we are going to use.
+    // but just logging the error to the console will make it visible on the hosting platforms that we are going to use.
     // In a simple app like this it is enough.
     console.error("ERROR 💥:", err);
 
@@ -97,10 +94,7 @@ const sendErrorProd = (err, req, res) => {
     });
   }
   // *B.2) Programming or other unknown error: do not leak error details.
-  // 1. Log error for developers
-  // There are real logging libraries on npm that we could use here instead of just having this simple console.error
-  // but just logging the error to hte console will make it visible onb the hosting platforms that we are going to use.
-  // In a simple app like this it is enough.
+
   console.error("ERROR 💥:", err);
 
   // 2. Send generic error message to the client
@@ -115,8 +109,6 @@ module.exports = (err, req, res, next) => {
 
   // We need to read which code to send from the error object
   // We need to define a default because there will be errors that are not coming from us
-  // for example errors created by the node application
-  // These errors might not have error status code so we need a default error code.
   err.statusCode = err.statusCode || 500;
   err.status = err.status || "error";
 
@@ -124,13 +116,10 @@ module.exports = (err, req, res, next) => {
     sendErrorDev(err, req, res);
   }
   if (process.env.NODE_ENV === "production") {
-    // We are creating a copy of the err
-    // because it is not a good practice to change the arguments of a function
-
     let error = { ...err };
     // ! AppError inherits the message property from the Error class and {...err} doesn't copy the prototype chain
     // ! Because of this, this causes a problem.
-    // ! We build the prototype chain to fix this
+    // ! We re-build the prototype chain to fix this
     Object.setPrototypeOf(error, err);
     // let error = Object.assign(err);
     // console.log(error);
@@ -139,8 +128,6 @@ module.exports = (err, req, res, next) => {
     // Types of the errors mongoose is throwing is written in the value property of the error
     // Cast Error happens when mongoose tries to cast types and fails
     if (err.name === "CastError") {
-      // We will create a new function and pass the error to that function
-      // and that function will return a new error created from our own AppError class
       error = handleCastErrorDB(err);
     }
 

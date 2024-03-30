@@ -111,7 +111,7 @@ app.use(cors());
 // ? Serving static files
 // We use this middleware for serving static files
 // like images, html, etc.
-// When it can not found a route specified in any of our routes
+// When it can not find a route specified in any of our routes
 // it will look into the public folder
 // And with this we don't have to specify the public folder in the url as well
 // We can just write http://127.0.0.1:3000/overview.html

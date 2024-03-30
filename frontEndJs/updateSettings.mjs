@@ -4,12 +4,6 @@ import { async } from "regenerator-runtime";
 import axios from "axios";
 import { showAlert } from "./alerts.mjs";
 
-// !NOT USED FOR EDUCATION PURPOSES
-// We haven't done this like this because we don't want to render an error page
-// instead we want to display an error badge when the form fails.
-// To do that we send the response and if there is an error we render that error badge on the client-side.
-// For this we have used our API.
-
 /**
  * @param string name
  * @param string email
